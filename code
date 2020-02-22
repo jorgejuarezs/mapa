@@ -10,7 +10,7 @@ library(data.table)
 
 # Cargamos archivo con los polígonos para el mapa
 
-mapa_shp <- st_read("D:/Users/e-jujuarez/Documents/conjunto_de_datos/areas_geoestadisticas_estatales.shp")
+mapa_shp <- st_read("D:/areas_geoestadisticas_estatales.shp")
 
 class(mapa_shp)
 str(mapa_shp)
@@ -19,7 +19,7 @@ names(mapa_shp)<-tolower(names(mapa_shp))
 # Cargamos los datos de clientes
 
 datos_client <-
-  fread("D:/Users/e-jujuarez/Documents/CognoData/mapa_clientes.csv",
+  fread("D:/mapa_clientes.csv",
         drop = "nom_ent")
 
 # Observamos estructura de los datos
@@ -63,7 +63,7 @@ saveWidget(mapa_2,"mapa_clientes_prueba")
 # Cargamos los datos
 
 datos_nivel_inclusion <-
-  fread("D:/Users/e-jujuarez/Documents/CognoData/mapa_inclusion.csv",
+  fread("D:/mapa_inclusion.csv",
         drop = "nom_ent")
 
 # Observamos estructura de los datos
@@ -96,7 +96,7 @@ tm_shape(datos_shp_inclusion) +
 # Cargamos los datos
 
 datos_monto <-
-  fread("D:/Users/e-jujuarez/Documents/CognoData/mapa_monto.csv",
+  fread("/mapa_monto.csv",
         drop = "nom_ent")
 
 # Observamos estructura de los datos
