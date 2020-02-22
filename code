@@ -1,1 +1,124 @@
+# Cargamos librerías
 
+library(sf)
+library(tmap)
+library(tmaptools)
+library(tidyverse)
+library(htmlwidgets)
+library(dplyr)
+library(data.table)
+
+# Cargamos archivo con los polígonos para el mapa
+
+mapa_shp <- st_read("D:/Users/e-jujuarez/Documents/conjunto_de_datos/areas_geoestadisticas_estatales.shp")
+
+class(mapa_shp)
+str(mapa_shp)
+names(mapa_shp)<-tolower(names(mapa_shp))
+
+# Cargamos los datos de clientes
+
+datos_client <-
+  fread("D:/Users/e-jujuarez/Documents/CognoData/mapa_clientes.csv",
+        drop = "nom_ent")
+
+# Observamos estructura de los datos
+head(datos_client,12)
+str(datos_client)
+
+# Etiquetamos correctamente los estados
+datos_client <- mutate(datos_client, cve_ent = formatC(datos_client$cve_ent,width = 2,format = "d",flag = "0"))
+
+# Convertimos la etiqueta en factor
+datos_client$cve_ent<-as.factor(datos_client$cve_ent)
+
+# Se hace el cruce del archivo shp con los datos cliente
+
+datos_shp_cliente <- mapa_shp %>% 
+  left_join(datos_client,by="cve_ent")
+
+class(datos_shp_cliente)
+str(datos_shp_cliente)
+head(datos_shp_cliente)
+
+# Construimos mapa
+
+mapa_1 <- tm_shape(datos_shp_cliente) +
+  tm_polygons("clientes")
+
+mapa_1
+
+# Construimos mapa interactivo
+
+mapa_2 <- tmap_leaflet(mapa_1)
+
+# Guardamos mapa interactivo
+
+saveWidget(mapa_2,"mapa_clientes_prueba")
+
+
+###### MAPA NIVEL PENETRACIÓN##### 
+
+
+# Cargamos los datos
+
+datos_nivel_inclusion <-
+  fread("D:/Users/e-jujuarez/Documents/CognoData/mapa_inclusion.csv",
+        drop = "nom_ent")
+
+# Observamos estructura de los datos
+head(datos_nivel_inclusion,12)
+str(datos_nivel_inclusion)
+
+# Etiquetamos correctamente los estados
+datos_nivel_inclusion <- mutate(datos_nivel_inclusion, cve_ent = formatC(datos_nivel_inclusion$cve_ent,width = 2,format = "d",flag = "0"))
+
+# Convertimos la etiqueta en factor
+datos_nivel_inclusion$cve_ent<-as.factor(datos_nivel_inclusion$cve_ent)
+
+# Se hace el cruce del archivo shp con los datos cliente
+
+datos_shp_inclusion <- mapa_shp %>% 
+  left_join(datos_nivel_inclusion,by="cve_ent")
+
+class(datos_shp_inclusion)
+str(datos_shp_inclusion)
+head(datos_shp_inclusion)
+
+# Construimos mapa
+
+tm_shape(datos_shp_inclusion) +
+  tm_polygons("inclusion")
+
+###### MAPA NIVEL MONTO PROMEDIO##### 
+
+
+# Cargamos los datos
+
+datos_monto <-
+  fread("D:/Users/e-jujuarez/Documents/CognoData/mapa_monto.csv",
+        drop = "nom_ent")
+
+# Observamos estructura de los datos
+head(datos_monto,12)
+str(datos_monto)
+
+# Etiquetamos correctamente los estados
+datos_monto <- mutate(datos_monto, cve_ent = formatC(datos_monto$cve_ent,width = 2,format = "d",flag = "0"))
+
+# Convertimos la etiqueta en factor
+datos_monto$cve_ent<-as.factor(datos_monto$cve_ent)
+
+# Se hace el cruce del archivo shp con los datos cliente
+
+datos_shp_monto <- mapa_shp %>% 
+  left_join(datos_monto,by="cve_ent")
+
+class(datos_shp_monto)
+str(datos_shp_monto)
+head(datos_shp_monto)
+
+# Construimos mapa
+
+tm_shape(datos_shp_monto) +
+  tm_polygons("monto_promedio")
